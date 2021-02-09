@@ -38,7 +38,7 @@ namespace TestSuite.ApiTests
 
 
                 // STEP 2: Publish the item.
-                await _.Contents.ChangeStatusAsync(content.Id, Status.Published);
+                await _.Contents.ChangeStatusAsync(content.Id, Status.Published.Name);
 
 
                 // STEP 3: Retrieve the item.
@@ -64,7 +64,7 @@ namespace TestSuite.ApiTests
 
 
                 // STEP 2: Archive the item.
-                await _.Contents.ChangeStatusAsync(content.Id, Status.Archived);
+                await _.Contents.ChangeStatusAsync(content.Id, Status.Archived.Name);
 
 
                 // STEP 3. Get a 404 for the item because it is not published anymore.
@@ -90,8 +90,8 @@ namespace TestSuite.ApiTests
 
 
                 // STEP 2: Change the status to publiushed and then to draft.
-                await _.Contents.ChangeStatusAsync(content.Id, Status.Published);
-                await _.Contents.ChangeStatusAsync(content.Id, Status.Draft);
+                await _.Contents.ChangeStatusAsync(content.Id, Status.Published.Name);
+                await _.Contents.ChangeStatusAsync(content.Id, Status.Draft.Name);
 
 
                 // STEP 3. Get a 404 for the item because it is not published anymore.

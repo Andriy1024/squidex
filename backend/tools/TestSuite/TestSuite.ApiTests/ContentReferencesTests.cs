@@ -25,6 +25,39 @@ namespace TestSuite.ApiTests
         }
 
         [Fact]
+        public async Task Should_query_references_and_referencing()
+        {
+            // STEP 1: Create a referenced content.
+            var dataA = new TestEntityWithReferencesData();
+
+            var contentA = await _.Contents.CreateAsync(dataA, true);
+
+
+            // STEP 2: Create a content with a reference.
+            var dataB = new TestEntityWithReferencesData { References = new[] { contentA.Id } };
+
+            var contentB = await _.Contents.CreateAsync(dataB, true);
+
+
+            // STEP 3: Query references.
+            var referencesOfB = await _.Contents.GetReferencesAsync(contentB);
+            var referencingOfB = await _.Contents.GetReferencingAsync(contentB);
+
+            Assert.Empty(referencingOfB.Items);
+            Assert.Single(referencesOfB.Items);
+            Assert.Single(referencesOfB.Items, x => x.Id == contentA.Id);
+
+
+            // STEP 3: Query references.
+            var referencesOfA = await _.Contents.GetReferencesAsync(contentA);
+            var referencingOfA = await _.Contents.GetReferencingAsync(contentA);
+
+            Assert.Empty(referencesOfA.Items);
+            Assert.Single(referencingOfA.Items);
+            Assert.Single(referencingOfA.Items, x => x.Id == contentB.Id);
+        }
+
+        [Fact]
         public async Task Should_not_deliver_unpublished_references()
         {
             // STEP 1: Create a referenced content.
